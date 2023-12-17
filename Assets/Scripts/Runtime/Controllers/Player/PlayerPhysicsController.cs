@@ -1,10 +1,7 @@
-using System;
 using DG.Tweening;
-using Runtime.Commands.Stack;
 using Runtime.Enums;
 using Runtime.Managers;
 using Runtime.Signals;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Runtime.Controllers.Player
@@ -85,27 +82,25 @@ namespace Runtime.Controllers.Player
                 {
                     CollectableColorTypes collectableColorType = collectableManager.collectableColorType;
                     CollectableColorTypes playerColorType = playerManager.playerColorType;
-
-                    // Check if the color types match
+                    
                     if (collectableColorType == playerColorType)
                     {
-                        Debug.Log("Color types match: " + collectableColorType);
-
-                        // Continue with the rest of your logic
+                        Debug.Log("Color match: " + collectableColorType);
+                        
                         other.tag = "Collected";
                         StackSignals.Instance.onInteractionCollectable?.Invoke(other.transform.parent.gameObject);
                         StackSignals.Instance.onUpdateAnimation?.Invoke();
                     }
                     else
                     {
-                        Debug.Log("Color types do not match: " + collectableColorType);
+                        Debug.Log("Color not match: " + collectableColorType);
                         StackSignals.Instance.onInteractionObstacleWithPlayer?.Invoke();
                         other.gameObject.SetActive(false);
                     }
                 }
                 else
                 {
-                    Debug.LogError("CollectableManager component not found on the collectable GameObject.");
+                    Debug.LogError("qqq");
                 }
 
                 return;
@@ -114,53 +109,50 @@ namespace Runtime.Controllers.Player
             if (other.CompareTag(_conveyor))
             {
                 CoreGameSignals.Instance.onMiniGameEntered?.Invoke();
-               
             }
 
             if (other.CompareTag(_blueWall))
             {
                 playerManager.UpgradePlayerVisual(CollectableColorTypes.Blue);
-
-                Debug.LogWarning("BLUE PlAYER");
             }
 
             if (other.CompareTag(_greenWall))
             {
                 playerManager.UpgradePlayerVisual(CollectableColorTypes.Green);
-
-
-                Debug.LogWarning("GREEN PLAYER");
             }
 
             if (other.CompareTag(_redWall))
             {
                 playerManager.UpgradePlayerVisual(CollectableColorTypes.Red);
-
-
-                Debug.LogWarning("RED PLAYER");
             }
 
 
             if (other.CompareTag(_colorfulObstacle))
             {
-                //playerManager.SetSlowSpeed();
-                
                 playerManager.StaticGroundObstacleState();
-
-                Debug.LogWarning("PLAYER SPEED STATE IS SLOW ! ");
+                
+                ObstacleSignals.Instance.onSendObstacleGroundType.Invoke(GroundObstacle.Turret);
+                Debug.Log("111");
+                //delay
+                GroundSignals.Instance.onObstacleAttack.Invoke();
+                
             }
 
             if (other.CompareTag(_colorfulDynamicObstacle))
             {
-                playerManager.DynamicGroundObstacleState();
+               // playerManager.DynamicGroundObstacleState();
+                playerManager.StaticGroundObstacleState();
+                ObstacleSignals.Instance.onSendObstacleGroundType.Invoke(GroundObstacle.Drone);
+               
+                
+                GroundSignals.Instance.onObstacleAttack.Invoke();
+                
+                //PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
 
-                Debug.LogWarning("DYNAMIC OBSTACLE !");
             }
 
             if (other.CompareTag(_groundObstacle))
             {
-                Debug.Log("GROUND OBSTACLE");
-
                 var otherMaterial = other.gameObject.GetComponent<MeshRenderer>().materials[0];
                 var otherColor = CleanUpMaterialName(otherMaterial.name);
 
@@ -172,40 +164,30 @@ namespace Runtime.Controllers.Player
                 {
                     _isColorMatchFailed = false;
                     
-                    Debug.LogWarning("GROUND COLOR SAME !");
+                    Debug.Log("same ground color");
                     
                     ObstacleSignals.Instance.onObstacleColorMatch?.Invoke(!_isColorMatchFailed);
                 }
                 else if (otherColor != playerManager.playerColorType.ToString())
                 {
                     _isColorMatchFailed = true;
-
-                    Debug.LogWarning("PLAYER COLOR " + playerColor);
-
-                    Debug.LogWarning("GROUND COLOR DOESN'T MATCH!");
-                    
+                    Debug.Log("players color" + playerColor);
                     ObstacleSignals.Instance.onObstacleColorMatch?.Invoke(!_isColorMatchFailed);
                 }
             }
         }
-
+        private string CleanUpMaterialName(string fullName)
+        {
+            int indexOfParenthesis = fullName.IndexOf(" (");
+            return indexOfParenthesis >= 0 ? fullName.Substring(0, indexOfParenthesis) : fullName;
+        }
         private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag(_colorfulObstacle))
             {
                 playerManager.SetNormalSpeed();
-
-                Debug.LogWarning("PLAYER SPEED STATE IS NORMAL ! ");
-
                 ResetColorMatchState();
             }
-        }
-
-        private string CleanUpMaterialName(string fullName)
-        {
-            // Example cleanup logic, you may need to adjust it based on your naming conventions
-            int indexOfParenthesis = fullName.IndexOf(" (");
-            return indexOfParenthesis >= 0 ? fullName.Substring(0, indexOfParenthesis) : fullName;
         }
 
         private void ResetColorMatchState()

@@ -202,13 +202,17 @@ namespace Runtime.Managers
             });
         }
 
+        internal void OnGroundMovePlayer()
+        {
+            movementController.OnRunMove();
+        }
         internal void StaticGroundObstacleState()
         {
             movementController.MoveSlowState(true);
             
             DOVirtual.DelayedCall(0.75f, () =>
             {
-                ObstacleSignals.Instance.onObstacleNormalAttack?.Invoke();
+                ObstacleSignals.Instance.onObstacleAttack?.Invoke();
             });
         }
     }

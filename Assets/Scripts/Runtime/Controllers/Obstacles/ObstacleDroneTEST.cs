@@ -8,7 +8,7 @@ namespace Runtime.Controllers.Obstacles
     public class ObstacleDroneTEST : MonoBehaviour
     {
         [Button("DRONE ATTACK!")]
-        public void DroneAttackFunction()
+        internal void DroneAttackFunction()
         {
             ObstacleSignals.Instance.onObstacleDroneAttack?.Invoke();
         }

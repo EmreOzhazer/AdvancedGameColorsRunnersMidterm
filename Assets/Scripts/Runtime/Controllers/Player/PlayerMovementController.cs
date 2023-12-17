@@ -130,7 +130,11 @@ namespace Runtime.Controllers.Player
             _isReadyToPlay = false;
             _isReadyToMove = false;
         }
-
+        public void OnRunMove()
+        {
+            _isReadyToPlay = true;
+            _isReadyToMove = true;
+        }
         private void MoveSlowly()
         {
             var velocity = rigidbody.velocity;

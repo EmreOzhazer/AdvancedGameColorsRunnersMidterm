@@ -5,13 +5,11 @@ using Sirenix.OdinInspector;
 
 namespace Runtime.Controllers.Obstacles
 {
-    public class ObstacleDroneController : MonoBehaviour
+    public class ObstacleTurretController : MonoBehaviour
     {
-        internal void DroneAttackFunction()
+        internal void TurretAttackFunction()
         {
             StackSignals.Instance.onInteractionObstacleWithPlayer?.Invoke();
-            
-            PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
         }
         
     }
