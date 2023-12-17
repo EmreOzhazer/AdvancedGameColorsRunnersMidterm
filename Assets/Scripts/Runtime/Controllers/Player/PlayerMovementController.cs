@@ -134,8 +134,8 @@ namespace Runtime.Controllers.Player
         private void MoveSlowly()
         {
             var velocity = rigidbody.velocity;
-            velocity = new Vector3(_inputValue * _data.SidewaysSpeed / 4, velocity.y,
-                _data.ForwardSpeed / 4);
+            velocity = new Vector3(_inputValue * _data.SidewaysSpeed / 2, velocity.y,
+                _data.ForwardSpeed / 2);
             rigidbody.velocity = velocity;
 
             Vector3 position;
@@ -152,10 +152,6 @@ namespace Runtime.Controllers.Player
         {
             _isSlowDown = state;
         }
-
-        /*nternal void StopPlayer()
-        {
-            _isReadyToPlay = false;
-        }*/
+        
     }
 }

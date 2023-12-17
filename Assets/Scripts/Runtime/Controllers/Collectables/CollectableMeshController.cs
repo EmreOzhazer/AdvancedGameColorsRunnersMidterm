@@ -33,7 +33,6 @@ namespace Runtime.Controllers.Collectables
         {
             skinnedMeshRenderer.material = _collectableColorData.MaterialsList[value];
             
-            Debug.LogWarning("UPGRADED VISUAL!");
         }
     }
 }

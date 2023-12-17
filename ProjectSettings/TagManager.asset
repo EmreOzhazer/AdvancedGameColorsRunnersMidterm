@@ -14,9 +14,6 @@ TagManager:
   - Gate
   - Collected
   - MiniGameArea
-  - Gate Blue
-  - Gate Green
-  - Gate Red
   - Obstacle Blue
   - Obstacle Green
   - Obstacle Red
@@ -24,6 +21,9 @@ TagManager:
   - Colorful Dynamic
   - Colorful Obstacle
   - Colorful Ground
+  - Red Wall
+  - Green Wall
+  - Blue Wall
   layers:
   - Default
   - TransparentFX

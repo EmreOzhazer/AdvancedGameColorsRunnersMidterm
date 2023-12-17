@@ -41,9 +41,6 @@ namespace Runtime.Controllers.Player
         {
             skinnedMeshRenderer.material = _collectableColorData.MaterialsList[value];
 
-            //meshRenderer.material = _collectableColorData.MaterialsList[value];
-            //meshRenderer.materials[0] = _collectableColorData.MaterialsList[value];
-            Debug.LogWarning("UPGRADED VISUAL PLAYER!");
         }
     }
 }

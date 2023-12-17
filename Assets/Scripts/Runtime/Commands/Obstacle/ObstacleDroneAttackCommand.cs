@@ -2,7 +2,6 @@
 using Runtime.Enums;
 using Runtime.Managers;
 using Runtime.Signals;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Runtime.Commands.Obstacle
@@ -20,33 +19,38 @@ namespace Runtime.Commands.Obstacle
 
         public void Execute()
         {
-            Transform startPoint = _colorfulObstacleManager.startPoint;
-            Transform midPoint = _colorfulObstacleManager.midPoint;
-            Transform endPoint = _colorfulObstacleManager.endPoint;
-
-
-            _droneGameObject.SetActive(true);
-
-            _droneGameObject.transform.DOMove(midPoint.position, 2.0f)
-                .OnComplete(() =>
+            MoveDroneToTarget(_colorfulObstacleManager.startPoint.position, _colorfulObstacleManager.midPoint.position, 2.0f, () =>
+            {
+                MoveDroneToTarget(_colorfulObstacleManager.midPoint.position, _colorfulObstacleManager.endPoint.position, 2.0f, () =>
                 {
-                    _droneGameObject.transform.DOMove(endPoint.position, 2.0f)
-                        .OnComplete(() =>
-                        {
-                            if (!_colorfulObstacleManager.IsColorMatched)
-                            {
-                                StackSignals.Instance.onInteractionObstacleWithPlayer?.Invoke();
-                                
-                                Debug.LogWarning("DRONE SHOOT !");
-                            }
-                            
-                            PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
-                            PlayerSignals.Instance.onChangePlayerAnimationState?.Invoke(PlayerAnimationStates.Run);
-                            
-                            Debug.Log("DRONE ACTION COMPLETED!");
-                            
-                        });
+                    if (!_colorfulObstacleManager.IsColorMatched)
+                    {
+                        HandleObstacleInteraction();
+                        Debug.LogWarning("DRONE SHOOT !");
+                    }
+
+                    HandlePlayerSignals();
+
+                    Debug.Log("DRONE ACTION COMPLETED!");
                 });
+            });
+        }
+
+        private void MoveDroneToTarget(Vector3 from, Vector3 to, float duration, TweenCallback onComplete = null)
+        {
+            _droneGameObject.SetActive(true);
+            _droneGameObject.transform.DOMove(to, duration).OnComplete(onComplete);
+        }
+
+        private void HandleObstacleInteraction()
+        {
+            StackSignals.Instance.onInteractionObstacleWithPlayer?.Invoke();
+        }
+
+        private void HandlePlayerSignals()
+        {
+            PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
+            PlayerSignals.Instance.onChangePlayerAnimationState?.Invoke(PlayerAnimationStates.Run);
         }
     }
 }

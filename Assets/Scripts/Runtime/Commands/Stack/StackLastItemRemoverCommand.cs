@@ -20,23 +20,33 @@ namespace Runtime.Commands.Stack
 
         public void Execute()
         {
-            // Remove the last item from the stack
             if (_collectableStack.Count > 0)
             {
-                int last = _collectableStack.Count - 1;
-                GameObject lastItem = _collectableStack[last];
-                _collectableStack.RemoveAt(last);
-                _collectableStack.TrimExcess();
+                RemoveLastItemFromStack();
 
-                // Additional logic for removing the last item
-                lastItem.transform.SetParent(_levelHolder.transform.GetChild(0));
-                lastItem.SetActive(false);
-                _stackManager.StackJumperCommand.Execute(last - 1,
-                    last); // Assuming StackJumperCommand needs adjustments
+                _stackManager.StackJumperCommand.Execute(_collectableStack.Count - 1,
+                    _collectableStack.Count);
                 _stackManager.StackTypeUpdaterCommand.Execute();
-                
+
                 _stackManager.OnSetStackAmount();
             }
         }
+
+        private void RemoveLastItemFromStack()
+        {
+            int lastIndex = _collectableStack.Count - 1;
+            GameObject lastItem = _collectableStack[lastIndex];
+            _collectableStack.RemoveAt(lastIndex);
+            _collectableStack.TrimExcess();
+
+            MoveLastItemToLevelHolder(lastItem);
+        }
+
+        private void MoveLastItemToLevelHolder(GameObject lastItem)
+        {
+            lastItem.transform.SetParent(_levelHolder.transform.GetChild(0));
+            lastItem.SetActive(false);
+        }
+
     }
 }

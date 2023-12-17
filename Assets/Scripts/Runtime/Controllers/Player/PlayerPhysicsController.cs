@@ -34,9 +34,9 @@ namespace Runtime.Controllers.Player
 
         #region Color Changer Gates Tags
 
-        private readonly string _gateRed = "Gate Red";
-        private readonly string _gateBlue = "Gate Blue";
-        private readonly string _gateGreen = "Gate Green";
+        private readonly string _redWall = "Red Wall";
+        private readonly string _blueWall = "Blue Wall";
+        private readonly string _greenWall = "Green Wall";
 
         #endregion
 
@@ -114,21 +114,17 @@ namespace Runtime.Controllers.Player
             if (other.CompareTag(_conveyor))
             {
                 CoreGameSignals.Instance.onMiniGameEntered?.Invoke();
-                // DOVirtual.DelayedCall(1.5f,
-                //     () => CameraSignals.Instance.onChangeCameraState?.Invoke(CameraStates.MiniGame));
-                // DOVirtual.DelayedCall(2.5f,
-                //     () => CameraSignals.Instance.onSetCinemachineTarget?.Invoke(CameraTargetState.FakePlayer));
-                // return;
+               
             }
 
-            if (other.CompareTag(_gateBlue))
+            if (other.CompareTag(_blueWall))
             {
                 playerManager.UpgradePlayerVisual(CollectableColorTypes.Blue);
 
                 Debug.LogWarning("BLUE PlAYER");
             }
 
-            if (other.CompareTag(_gateGreen))
+            if (other.CompareTag(_greenWall))
             {
                 playerManager.UpgradePlayerVisual(CollectableColorTypes.Green);
 
@@ -136,7 +132,7 @@ namespace Runtime.Controllers.Player
                 Debug.LogWarning("GREEN PLAYER");
             }
 
-            if (other.CompareTag(_gateRed))
+            if (other.CompareTag(_redWall))
             {
                 playerManager.UpgradePlayerVisual(CollectableColorTypes.Red);
 

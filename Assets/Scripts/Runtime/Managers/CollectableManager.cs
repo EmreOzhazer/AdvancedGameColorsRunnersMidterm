@@ -92,7 +92,7 @@ namespace Runtime.Managers
         {
             if (IsCurrentTrigger("Idle"))
             {
-                animationController.AnimationState(CollectableAnimationStates.Run);
+                animationController.SetAnimationState(CollectableAnimationStates.Run);
             }
         }
 

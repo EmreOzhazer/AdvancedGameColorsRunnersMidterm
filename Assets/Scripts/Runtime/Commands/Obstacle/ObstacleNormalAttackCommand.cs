@@ -15,12 +15,21 @@ namespace Runtime.Commands.Obstacle
 
         public void Execute()
         {
+            PerformNormalAttack();
+        }
+
+        private void PerformNormalAttack()
+        {
             if (!_colorfulObstacleManager.IsColorMatched)
             {
-                StackSignals.Instance.onInteractionObstacleWithPlayer?.Invoke();
-
+                HandleObstacleInteraction();
                 Debug.LogWarning("TURRET SHOOT !");
             }
+        }
+
+        private void HandleObstacleInteraction()
+        {
+            StackSignals.Instance.onInteractionObstacleWithPlayer?.Invoke();
         }
     }
 }

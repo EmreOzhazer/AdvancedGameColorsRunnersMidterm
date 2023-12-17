@@ -25,9 +25,9 @@ namespace Runtime.Controllers.Collectables
         private readonly string _collected = "Collected";
         private readonly string _gate = "Gate";
 
-        private readonly string _gateRed = "Gate Red";
-        private readonly string _gateBlue = "Gate Blue";
-        private readonly string _gateGreen = "Gate Green";
+        private readonly string _redWall = "Red Wall";
+        private readonly string _blueWall = "Blue Wall";
+        private readonly string _greenWall = "Green Wall";
 
         private readonly string _atm = "ATM";
         private readonly string _obstacle = "Obstacle";
@@ -41,21 +41,6 @@ namespace Runtime.Controllers.Collectables
 
         private void OnTriggerEnter(Collider other)
         {
-            /*if (other.CompareTag(_collectable) && CompareTag(_collected))
-            {
-                if (manager.playerColorType == manager.collectableColorType)
-                {
-                    Debug.LogWarning("SAME !!!");
-                    
-                    other.tag = _collected;
-                    manager.InteractionWithCollectable(other.transform.parent.gameObject);
-                }
-                else
-                {
-                    manager.InteractionWithObstacle(transform.parent.gameObject);
-                }
-
-            }*/
 
             if (other.CompareTag(_gate) && CompareTag(_collected))
             {
@@ -77,25 +62,24 @@ namespace Runtime.Controllers.Collectables
                 manager.InteractionWithConveyor();
             }
 
-            // ------------------------------------------------------------
-
-            if (other.CompareTag(_gateBlue) && CompareTag(_collected))
+            if (other.CompareTag(_blueWall) && CompareTag(_collected))
             {
                 manager.CollectableUpgrade((int)GateTypes.GateBlue);
-                Debug.LogWarning("BLUE GATE");
+                Debug.LogWarning("blue wall");
             }
 
-            if (other.CompareTag(_gateGreen) && CompareTag(_collected))
+            if (other.CompareTag(_greenWall) && CompareTag(_collected))
             {
                 manager.CollectableUpgrade((int)GateTypes.GateGreen);
-                Debug.LogWarning("GREEN GATE");
+                Debug.LogWarning("green wall");
             }
 
-            if (other.CompareTag(_gateRed) && CompareTag(_collected))
+            if (other.CompareTag(_redWall) && CompareTag(_collected))
             {
                 manager.CollectableUpgrade((int)GateTypes.GateRed);
-                Debug.LogWarning("RED GATE");
+                Debug.LogWarning("red wall");
             }
         }
+        
     }
 }

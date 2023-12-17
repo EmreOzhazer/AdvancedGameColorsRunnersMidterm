@@ -7,24 +7,12 @@ namespace Runtime.Controllers.Collectables
 {
     public class CollectableAnimationController : MonoBehaviour
     {
-        #region Self Variables
-
-        #region Serialized Variables
-
         [SerializeField] internal Animator animator;
-
-        #endregion
-
-        #endregion
 
         private void OnEnable()
         {
             SubscribeEvents();
-        }
-
-        private void Start()
-        {
-            animator.SetTrigger("Idle");
+            SetInitialAnimationState();
         }
 
         private void SubscribeEvents()
@@ -32,26 +20,30 @@ namespace Runtime.Controllers.Collectables
             CollectableSignals.Instance.onChangeCollectableAnimationState += OnChangeAnimationState;
         }
 
-
-        internal void AnimationState(CollectableAnimationStates animationStates)
+        private void SetInitialAnimationState()
         {
-            animator.SetTrigger(animationStates.ToString());
+            SetAnimationState(CollectableAnimationStates.Idle);
+        }
+
+        internal void SetAnimationState(CollectableAnimationStates animationState)
+        {
+            animator.SetTrigger(animationState.ToString());
         }
 
         private void OnChangeAnimationState(CollectableAnimationStates animationState)
         {
-            //animator.SetTrigger(animationState.ToString());
-            //Debug.LogWarning("SELECTED ANIMATION STATE :" + animationState);
+            SetAnimationState(animationState);
+           
         }
 
-        private void UnSubscribeEvents()
+        private void UnsubscribeEvents()
         {
             CollectableSignals.Instance.onChangeCollectableAnimationState -= OnChangeAnimationState;
         }
 
         private void OnDisable()
         {
-            UnSubscribeEvents();
+            UnsubscribeEvents();
         }
 
         internal void OnReset()

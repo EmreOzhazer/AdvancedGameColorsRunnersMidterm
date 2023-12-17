@@ -20,24 +20,6 @@ namespace Runtime.Commands.Stack
             _stackData = stackData;
             _collectableStack = collectableStack;
         }
-
-        /*public IEnumerator Execute()
-        {
-            for (int i = 0; i <= _collectableStack.Count - 1; i++)
-            {
-                int index = (_collectableStack.Count - 1) - i;
-                Transform stackTransform = _collectableStack[index].transform;
-
-                // Scale Punch Animation
-                stackTransform.DOScale(Vector3.one * _stackData.StackScaleValue, _stackData.StackAnimDuraction)
-                    .SetEase(Ease.OutBounce);
-                yield return new WaitForSeconds(_stackData.StackAnimDuraction / 2);
-                stackTransform.DOScale(Vector3.one, _stackData.StackAnimDuraction)
-                    .SetEase(Ease.OutBounce);
-                yield return new WaitForSeconds(_stackData.StackAnimDuraction / 2);
-            }
-        }*/
-
         public IEnumerator Execute()
         {
             for (int i = 0; i <= _collectableStack.Count - 1; i++)
